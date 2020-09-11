@@ -9,7 +9,7 @@ const doubleAsync = (n: number) => {
 };
 
 function App() {
-  const [value, { isDone, isError, isIdle, isLoading }, _doubleAsync] = useAsync(doubleAsync);
+  const [data, { isDone, isError, isIdle, isLoading }, invoke] = useAsync(doubleAsync);
 
   const n = Math.ceil(Math.random() * 10);
   console.log(isDone, isError, isIdle, isLoading);
@@ -24,9 +24,9 @@ function App() {
           Learn React
         </a>
 
-        {isLoading ? <div>loading</div> : value && <div>The new value is {value}</div>}
+        {isLoading ? <div>loading</div> : data && <div>The new value is {data}</div>}
         <hr />
-        <button onClick={() => _doubleAsync(n)}>Click here to calculate {n} * 2</button>
+        <button onClick={() => invoke(n)}>Click here to calculate {n} * 2</button>
       </header>
     </div>
   );

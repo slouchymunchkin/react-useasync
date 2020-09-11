@@ -14,7 +14,7 @@ export interface AsyncState2 {
   isError?: boolean;
 }
 
-type State<T> = { value: T; state: AsyncState2 };
+type State<T> = { data: T; state: AsyncState2 };
 type AsyncFunction<T extends any[], R> = (...args: T) => Promise<R>;
 type ReturnType<T extends any[], R> = [R, AsyncState2, (...args: T) => void];
 
@@ -28,12 +28,12 @@ export default function useAsync<T extends any[], R>(method: AsyncFunction<T, R>
     return () => void (isMounted.current = false);
   }, []);
 
-  const [{ value, state }, dispatch] = useReducer(
+  const [{ data, state }, dispatch] = useReducer(
     (state: State<R>, action: Partial<State<R>>) => ({
       ...state,
       ...action
     }),
-    { value: initialValue as R, state: { isIdle: true } }
+    { data: initialValue as R, state: { isIdle: true } }
   );
 
   const invoke = useCallback(
@@ -43,19 +43,19 @@ export default function useAsync<T extends any[], R>(method: AsyncFunction<T, R>
       }
       dispatch({ state: { isLoading: true } });
       method(...args)
-        .then((value) => {
+        .then((data) => {
           if (isMounted.current) {
-            dispatch({ value, state: { isDone: true } });
+            dispatch({ data, state: { isDone: true } });
           }
         })
         .catch((err) => {
           if (isMounted.current) {
-            dispatch({ value: err, state: { isError: true } });
+            dispatch({ data: err, state: { isError: true } });
           }
         });
     },
     [method]
   );
 
-  return [value, state, invoke];
+  return [data, state, invoke];
 }
