@@ -1,0 +1,64 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "start-debug",
+      "type": "npm",
+      "script": "start:debug",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "custom",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Compiling...",
+          "endsPattern": "Compiled .*"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "group": "build"
+      }
+    },
+    {
+      "label": "kill-debug-process",
+      "type": "process",
+      "command": ["${command:workbench.action.terminal.kill}"]
+    },
+    {
+      "label": "terminal-all",
+      "dependsOn": ["terminal-npm", "terminal-dotnet"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "terminal-npm",
+      "type": "npm",
+      "script": "start",
+      "presentation": {
+        "reveal": "always",
+        "group": "build"
+      }
+    },
+    {
+      "label": "terminal-dotnet",
+      "command": "dotnet",
+      "type": "shell",
+      "args": ["run", "--project", "../Backend"],
+      "presentation": {
+        "reveal": "always",
+        "group": "build"
+      }
+    }
+  ]
+}

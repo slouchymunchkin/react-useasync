@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Frontend Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "start-debug",
+      "postDebugTask": "kill-debug-process",
+      "sourceMaps": true,
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      },
+      "skipFiles": ["node_modules", "VM**"],
+      "userDataDir": false,
+      "runtimeArgs": ["--disable-infobars --disable-session-crashed-bubble --disable-translate --disable-background-mode"]
+    },
+    {
+      "name": "Firefox (does not work currently)",
+      "type": "firefox",
+      "request": "launch",
+      "preLaunchTask": "start-debug",
+      "postDebugTask": "kill-debug-process",
+      "reAttach": false,
+      "profile": "dev-edition-default",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Frontend Chrome & Backend",
+      "configurations": ["Frontend Chrome", "Backend"]
+    }
+  ]
+}
